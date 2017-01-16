@@ -1,59 +1,73 @@
 function Node(val){
   this.val = val;
   this.next = null;
-}
+};
 function SLL(){
   this.head = null;
   this.tail = null;
-  this.length = 0;
-  this.add = function(node){
-    if (!this.head) {
-      this.head = node;
-      this.tail = node;
+};
+SLL.prototype.add = function(node){
+  if (!this.head) {
+    this.head = node;
+    this.tail = node;
+  }
+  else {
+    this.tail.next = node;
+    this.tail = node;
+  }
+  return this;
+};
+SLL.prototype.pop = function(){
+  var curr = this.head;
+  if (!curr){ }
+  else if (!curr.next) {
+    this.head = null
+  } else {
+    while(curr.next.next){
+      curr = curr.next
     }
-    else {
-      this.tail.next = node;
-      this.tail = node;
-    }
+    curr.next = null
+    this.tail = curr;
+  }
+  return this
+};
+SLL.prototype.show = function(){
+  var curr = this.head;
+  var counter = 1;
+  while(curr){
+    console.log("Value of node at position", counter, ":", curr.val);
+    curr = curr.next;
+    counter++;
+  }
+  return this;
+};
+SLL.prototype.length = function(){
+  var curr = this.head;
+  var count = 0;
+  while (curr){
+    count++;
+    curr = curr.next;
+  }
+  return count;
+};
+SLL.prototype.reverse = function () {
+  var pivot = this.head, curr;
+  if (!this.head || !this.head.next) {
     return this;
   }
-  this.pop = function(){
-    var curr = this.head;
-    if (!curr){
-
+  while(pivot.next){
+    curr = pivot.next;
+    if (curr.next) {
+      pivot.next = curr.next;
+    } else {
+      this.tail = pivot;
+      this.tail.next = null;
     }
-    else if (!curr.next) {
-      this.head = null
-    }
-    else {
-      while(curr.next.next){
-        curr = curr.next
-      }
-      curr.next = null
-      this.tail = curr;
-    }
-    return this
+    curr.next = this.head;
+    this.head = curr;
   }
-  this.show = function(){
-    var curr = this.head;
-    var counter = 1;
-    while(curr){
-      console.log("Value of node at position", counter, ":", curr.val);
-      curr = curr.next;
-      counter++;
-    }
-    return this;
-  }
-  this.length = function(){
-    var curr = this.head;
-    var count = 0;
-    while (curr){
-      count++;
-      curr = curr.next;
-    }
-    return count;
-  }
-}
+  return this;
+};
 function compare_stacks(sll1,sll2){
   if (sll1.length() !== sll2.length()) {
     return false;
@@ -68,7 +82,7 @@ function compare_stacks(sll1,sll2){
     curr2 = curr2.next;
   }
   return true;
-}
+};
 
 var node1 = new Node(3);
 var node2 = new Node(7);
@@ -104,11 +118,11 @@ var node19 = new Node(22);
 
 var sll4 = new SLL();
 sll4.add(node16).add(node17).add(node18).add(node19);
-sll4.pop().show();
-
 var x = compare_stacks(sll1,sll2);
 console.log(x); //true
 x = compare_stacks(sll1,sll3);
 console.log(x);//false
 x = compare_stacks(sll3,sll4);
 console.log(x);//false
+
+sll4.show().reverse().show();
